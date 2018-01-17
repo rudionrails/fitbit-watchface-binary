@@ -1,0 +1,39 @@
+<svg id="screen" class="Screen portrait-view">
+  <rect id="background" class="Background" />
+  
+  <svg class="Binary">
+    <!-- hours -->
+    <circle class="Binary-dot Binary-hours-left" cx="20" cy="100%-20" />
+    <circle class="Binary-dot Binary-hours-left" cx="20" cy="100%-50" />
+    
+    <circle class="Binary-dot Binary-hours-right" cx="50" cy="100%-20" />
+    <circle class="Binary-dot Binary-hours-right" cx="50" cy="100%-50" />
+    <circle class="Binary-dot Binary-hours-right" cx="50" cy="100%-80" />
+    <circle class="Binary-dot Binary-hours-right" cx="50" cy="100%-110" />
+    
+    <!-- minutes -->
+    <circle class="Binary-dot Binary-minutes-left" cx="100" cy="100%-20" />
+    <circle class="Binary-dot Binary-minutes-left" cx="100" cy="100%-50" />
+    <circle class="Binary-dot Binary-minutes-left" cx="100" cy="100%-80" />
+    
+    <circle class="Binary-dot Binary-minutes-right" cx="130" cy="100%-20" />
+    <circle class="Binary-dot Binary-minutes-right" cx="130" cy="100%-50" />
+    <circle class="Binary-dot Binary-minutes-right" cx="130" cy="100%-80" />
+    <circle class="Binary-dot Binary-minutes-right" cx="130" cy="100%-110" />
+    
+    <!-- seconds -->
+    <circle class="Binary-dot Binary-seconds-left" cx="180" cy="100%-20" />
+    <circle class="Binary-dot Binary-seconds-left" cx="180" cy="100%-50" />
+    <circle class="Binary-dot Binary-seconds-left" cx="180" cy="100%-80" />
+    
+    <circle class="Binary-dot Binary-seconds-right" cx="210" cy="100%-20" />
+    <circle class="Binary-dot Binary-seconds-right" cx="210" cy="100%-50" />
+    <circle class="Binary-dot Binary-seconds-right" cx="210" cy="100%-80" />
+    <circle class="Binary-dot Binary-seconds-right" cx="210" cy="100%-110" />
+  </svg>
+  
+  <svg class="Digital">
+    <text id="clock-time" class="Clock-time Clock-shadow">23:59</text>
+    <text id="clock-shadow" class="Clock-time">23:59</text>
+  </svg>
+</svg>

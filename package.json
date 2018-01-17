@@ -1,0 +1,15 @@
+{
+  "fitbit": {
+    "appUUID": "b2a32817-ed09-42f6-b3ae-72c16151da68",
+    "appType": "clockface",
+    "appDisplayName": "Watchface - Binary",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "",
+    "requestedPermissions": [],
+    "i18n": {
+      "en": {
+        "name": "Watchface - Binary"
+      }
+    }
+  }
+}
