@@ -22,19 +22,21 @@ const digitalDOM            = document.getElementById("digital");
 const digitalTimeDOM        = document.getElementById("digital-time");
 const digitalTimeShadowDOM  = document.getElementById("digital-shadow");
 
+let themeColor = 'deeppink';
+
 function updateClock({ date }) {
   const seconds = ('0' + date.getSeconds()).slice(-2);
   const minutes = ('0' + date.getMinutes()).slice(-2);
   const hours   = ('0' + date.getHours()).slice(-2);
   const time = [hours, minutes, seconds].join(':');
-  
-  fillDOMNodes(hours, hoursLeftDOM, hoursRightDOM);
-  fillDOMNodes(minutes, minutesLeftDOM, minutesRightDOM);
-  fillDOMNodes(seconds, secondsLeftDOM, secondsRightDOM);
-  
+
+  fillDOMNodes(themeColor, hours, hoursLeftDOM, hoursRightDOM);
+  fillDOMNodes(themeColor, minutes, minutesLeftDOM, minutesRightDOM);
+  fillDOMNodes(themeColor, seconds, secondsLeftDOM, secondsRightDOM);
+
   digitalTimeDOM.text = time;
   digitalTimeShadowDOM.text = time;
-  
+
   // backgroundDOM.style.fill = (backgroundDOM.style.fill == "green") ? 'yellow' : 'green';
 }
 
@@ -53,12 +55,16 @@ peerSocket.onclose = () => console.log("[App] Socket closed");
 peerSocket.onmessage = ({ data }) => {
   display.on = true; // switch on the display for changes in the settings
   console.log(`[App] received: ${JSON.stringify(data)}`);
-  
+
   if (data.key === "isDisplayAlwaysOn") {
-    display.autoOff = data.newValue !== 'true';
+    display.autoOff = data.newValue !== true;
+  }
+
+  if (data.key === "isDigitalClockEnabled") {
+    digitalTimeDOM.style.display = (data.newValue === true) ? 'inherit' : 'none';
   }
   
-  if (data.key === "isDigitalClockEnabled") {
-    digitalTimeDOM.style.display = (data.newValue === 'true') ? 'inherit' : 'none';
+  if (data.key === 'themeColor') {
+    themeColor = data.newValue;
   }
 };

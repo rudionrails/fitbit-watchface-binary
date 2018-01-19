@@ -1,16 +1,16 @@
 const toBinary = (num) => ('0000' + (num >>> 0).toString(2)).slice(-4);
 
-const apply = (value, nodes) => {
+const apply = (color, value, nodes) => {
   const digits = toBinary(value).split('').reverse();
  
   nodes.forEach((node, index) => {
-    node.style.fill = (digits[index] === '1') ? 'fb-magenta' : 'gray';
+    node.style.fill = (digits[index] === '1') ? color : 'gray';
   });
 }
 
-export const fillDOMNodes = (num, leftDOM, rightDOM) => {
-  const [ leftBin, rightBin ] = `${num}`.split('');
+export const fillDOMNodes = (color, number, leftDOM, rightDOM) => {
+  const [ leftBinary, rightBinary ] = `${number}`.split('');
   
-  apply(leftBin, leftDOM);
-  apply(rightBin, rightDOM);
+  apply(color, leftBinary, leftDOM);
+  apply(color, rightBinary, rightDOM);
 }

@@ -1,9 +1,6 @@
 import { peerSocket } from "messaging";
 import { settingsStorage } from "settings";
 
-console.log("[Companion] Started");
-
-
 /**
 * Settings
 */
@@ -11,7 +8,10 @@ settingsStorage.onchange = event => {
   console.log(`[Companion] Changing Settings: ${JSON.stringify(event)}`);
   
   if (peerSocket.readyState === peerSocket.OPEN) {
-    peerSocket.send(event);
+    peerSocket.send({
+      key: event.key,
+      newValue: JSON.parse(event.newValue),
+    });
   } else {
     console.log("[Companion] Cannot send changes to watch: peer socket not ready");
   }

@@ -1,3 +1,13 @@
+const themeColors = [
+  { color: 'tomato' },
+  { color: 'sandybrown' },
+  { color: 'gold' },
+  { color: 'aquamarine' },
+  { color: 'deepskyblue' },
+  { color: 'plum' },
+  { color: 'deeppink'},
+];
+
 const page = (props) => (
   <Page>
     <Section title="General Settings">
@@ -8,6 +18,13 @@ const page = (props) => (
       <Toggle
         settingsKey="isDisplayAlwaysOn"
         label="Always on? (don't switch off display)"
+      />
+    </Section>
+    
+    <Section title="Color Settings">
+      <ColorSelect
+        settingsKey="themeColor"
+        colors={themeColors}
       />
     </Section>
   </Page>
