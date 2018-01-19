@@ -32,8 +32,8 @@
     <circle class="Binary-dot Binary-seconds-right" cx="210" cy="100%-110" />
   </svg>
   
-  <svg class="Digital">
-    <text id="clock-time" class="Clock-time Clock-shadow">23:59</text>
-    <text id="clock-shadow" class="Clock-time">23:59</text>
+  <svg id="digital" class="Digital">
+    <text id="digital-shadow" class="Digital-time Digital-shadow">23:59:59</text>
+    <text id="digital-time" class="Digital-time">23:59:59</text>
   </svg>
 </svg>
