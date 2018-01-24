@@ -1,8 +1,10 @@
 import clock from "clock";
 import document from "document";
+
 import { display } from "display";
 import { peerSocket } from "messaging";
 
+import { colors } from '../common/colors';
 import { fillDOMNodes } from '../common/utils';
 
 // screen
@@ -22,7 +24,21 @@ const digitalDOM            = document.getElementById("digital");
 const digitalTimeDOM        = document.getElementById("digital-time");
 const digitalTimeShadowDOM  = document.getElementById("digital-shadow");
 
-let themeColor = 'deeppink';
+let themeColor = colors[0].color;
+
+function set(key, value) {
+  switch (key) {
+    case "isDisplayAlwaysOn":
+      display.autoOff = value !== true;
+      break;
+    case "isDigitalClockDisabled":
+      digitalDOM.style.display = (value === true) ? 'none' : 'inherit';
+      break;
+    case "themeColor":
+      themeColor = value;
+      break;
+  }
+}
 
 function updateClock({ date }) {
   const seconds = ('0' + date.getSeconds()).slice(-2);
@@ -30,14 +46,17 @@ function updateClock({ date }) {
   const hours   = ('0' + date.getHours()).slice(-2);
   const time = [hours, minutes, seconds].join(':');
 
-  fillDOMNodes(themeColor, hours, hoursLeftDOM, hoursRightDOM);
-  fillDOMNodes(themeColor, minutes, minutesLeftDOM, minutesRightDOM);
-  fillDOMNodes(themeColor, seconds, secondsLeftDOM, secondsRightDOM);
+  try {
+    fillDOMNodes(themeColor, hours, hoursLeftDOM, hoursRightDOM);
+    fillDOMNodes(themeColor, minutes, minutesLeftDOM, minutesRightDOM);
+    fillDOMNodes(themeColor, seconds, secondsLeftDOM, secondsRightDOM);
+  } catch (e) {
+    console.error(`broken color: ${themeColor}`);
+    console.log(e);
+  }
 
   digitalTimeDOM.text = time;
   digitalTimeShadowDOM.text = time;
-
-  // backgroundDOM.style.fill = (backgroundDOM.style.fill == "green") ? 'yellow' : 'green';
 }
 
 /**
@@ -45,7 +64,6 @@ function updateClock({ date }) {
 */
 clock.granularity = "seconds";
 clock.ontick = updateClock;
-updateClock({ date: new Date() }); // don't start with a blank screen
 
 /**
 * Messaging
@@ -54,17 +72,11 @@ peerSocket.onopen = () => console.log("[App] Socket open");
 peerSocket.onclose = () => console.log("[App] Socket closed");
 peerSocket.onmessage = ({ data }) => {
   display.on = true; // switch on the display for changes in the settings
-  console.log(`[App] received: ${JSON.stringify(data)}`);
 
-  if (data.key === "isDisplayAlwaysOn") {
-    display.autoOff = data.newValue !== true;
-  }
-
-  if (data.key === "isDigitalClockEnabled") {
-    digitalTimeDOM.style.display = (data.newValue === true) ? 'inherit' : 'none';
-  }
-  
-  if (data.key === 'themeColor') {
-    themeColor = data.newValue;
+  try {
+    console.log(`[App] received ${JSON.stringify(data)}`);
+    set(data.key, data.newValue);
+  } catch(e) {
+    console.error(`[App] Could not set ${JSON.stringify(data)}`)
   }
 };
