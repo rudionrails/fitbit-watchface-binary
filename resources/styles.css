@@ -16,10 +16,15 @@
 .Binary {
   x: 58;
   height: 70%;
+  
+  fill: green;
 }
-
 .Binary-dot {
   r: 10;
+}
+
+.Binary-shadow {
+  opacity: 0.5;
 }
 
 /**
@@ -27,7 +32,8 @@
 */
 .Digital {
   x: 50%;
-  y: 230;
+  y: 100%;
+  margin-bottom: -20;
   
   font-size: 40;
   font-family: Tungsten-Medium;

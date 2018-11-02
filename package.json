@@ -6,10 +6,17 @@
     "iconFile": "resources/icon.png",
     "wipeColor": "",
     "requestedPermissions": [],
+    "buildTargets": [
+      "higgs",
+      "meson"
+    ],
     "i18n": {
       "en": {
         "name": "Binary"
       }
     }
+  },
+  "devDependencies": {
+    "@fitbit/sdk": "~2.0.0"
   }
 }

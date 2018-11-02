@@ -1,4 +1,4 @@
-import { colors } from '../common/colors';
+import { colors, opacities } from '../common/utils';
 
 const page = (props) => (
   <Page>
@@ -15,8 +15,14 @@ const page = (props) => (
 
     <Section title="Color Settings">
       <ColorSelect
-        settingsKey="themeColor"
+        settingsKey="binaryClockColor"
         colors={colors}
+      />
+      <Select
+        label="Background Opacity"
+        settingsKey="binaryClockShadowOpacity"
+        options={opacities}
+        onSelect={(selection) => console.log(`onSelect ${JSON.stringify(selection)}`)}
       />
     </Section>
 

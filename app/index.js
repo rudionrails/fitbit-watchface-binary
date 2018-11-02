@@ -1,11 +1,14 @@
 import clock from "clock";
 import document from "document";
-
 import { display } from "display";
 import { peerSocket } from "messaging";
 
-import { colors } from '../common/colors';
-import { fillDOMNodes, findDOMNodes } from '../common/utils';
+import { 
+  colors,
+  opacities,
+  displayDOMNodes,
+  findDOMNodes,
+} from '../common/utils';
 
 // screen
 const backgroundDOM = document.getElementById('background');
@@ -13,61 +16,62 @@ const backgroundDOM = document.getElementById('background');
 // binary clock elements
 const binaryDOM = document.getElementById('binary-time');
 const binaryShadowDOM = document.getElementById('binary-shadow');
-
-const {
-  hoursLeftDOM,
-  hoursRightDOM,
-  minutesLeftDOM,
-  minutesRightDOM,
-  secondsLeftDOM,
-  secondsRightDOM,
-} = findDOMNodes(binaryDOM);
+const nodes = findDOMNodes(binaryDOM);
 
 // digital clock elements
-const digitalDOM            = document.getElementById("digital");
-const digitalTimeDOM        = document.getElementById("digital-time");
-const digitalTimeShadowDOM  = document.getElementById("digital-shadow");
+const digitalDOM = document.getElementById("digital");
+const digitalTimeDOM = document.getElementById("digital-time");
+const digitalTimeShadowDOM = document.getElementById("digital-shadow");
 
-let themeColor = colors[0].color;
-
-function set(key, value) {
+const set = (key, newValue) => {
   switch (key) {
     case "isDisplayAlwaysOn":
-      display.autoOff = value !== true;
+      display.autoOff = newValue !== true;
       break;
     case "isDigitalClockDisabled":
-      digitalDOM.style.display = (value === true) ? 'none' : 'inherit';
+      digitalDOM.style.display = (newValue === true) ? 'none' : 'inherit';
       break;
-    case "themeColor":
-      themeColor = value;
+    case "binaryClockColor":
+      binaryDOM.style.fill = newValue;
+      binaryShadowDOM.style.fill = newValue;
+      break;
+    case 'binaryClockShadowOpacity':
+      console.log(`[Opacity] ${JSON.stringify(newValue)}`);
+      
+      const index = newValue.selected[0];
+      console.log(`[Opacity Index] ${index}`);
+      
+      // {"key":"binaryClockShadowOpacity","newValue":{"values":[{"name":"50%","value":0.5}],"selected":[1]}}
+      const opacity = opacities[index].value;
+      console.log(`[Opacity Index] ${opacity} (${typeof opacity})`);
+      
+      binaryShadowDOM.style.opacity = opacity;
+      
       break;
   }
-}
-
-function updateClock({ date }) {
-  const seconds = ('0' + date.getSeconds()).slice(-2);
-  const minutes = ('0' + date.getMinutes()).slice(-2);
-  const hours   = ('0' + date.getHours()).slice(-2);
-  const time = [hours, minutes, seconds].join(':');
-  
-  try {
-    fillDOMNodes(themeColor, hours, hoursLeftDOM, hoursRightDOM);
-    fillDOMNodes(themeColor, minutes, minutesLeftDOM, minutesRightDOM);
-    fillDOMNodes(themeColor, seconds, secondsLeftDOM, secondsRightDOM);
-  } catch (e) {
-    console.error(`broken color: ${themeColor}`);
-    console.log(e);
-  }
-
-  digitalTimeDOM.text = time;
-  digitalTimeShadowDOM.text = time;
-}
+};
 
 /**
 * Clock
 */
 clock.granularity = "seconds";
-clock.ontick = updateClock;
+clock.ontick = ({ date }) => {
+  const seconds = ('0' + date.getSeconds()).slice(-2);
+  const minutes = ('0' + date.getMinutes()).slice(-2);
+  const hours   = ('0' + date.getHours()).slice(-2);
+  const time = [hours, minutes, seconds].join(':');
+  
+  digitalTimeDOM.text = time;
+  digitalTimeShadowDOM.text = time;
+  
+  try {
+    displayDOMNodes(hours, nodes.hoursLeftDOM, nodes.hoursRightDOM);
+    displayDOMNodes(minutes, nodes.minutesLeftDOM, nodes.minutesRightDOM);
+    displayDOMNodes(seconds, nodes.secondsLeftDOM, nodes.secondsRightDOM);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 /**
 * Messaging
